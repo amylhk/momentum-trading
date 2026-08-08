@@ -1,0 +1,11 @@
+streamlit==1.57.0
+streamlit-searchbox
+pandas
+pandas_market_calendars
+pandas-ta
+yfinance
+scipy
+scikit-learn
+trendln
+huggingface-hub
+ultralytics

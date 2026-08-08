@@ -1,0 +1,33 @@
+[role="dialog"] > div:first-of-type {
+  height: 0;
+  padding: 0 !important;
+}
+
+[class*="st-key-view"] button, [class*="st-key-delete"] button {
+  border-radius: 999px !important;
+  min-width: 1.85rem !important;
+  width: 1.85rem !important;
+  max-width: 1.85rem !important;
+  min-height: 1.85rem !important;
+  height: 1.85rem !important;
+  max-height: 1.85rem !important;
+  aspect-ratio: 1 / 1;
+  padding: 0 !important;
+}
+
+[class*="st-key-view"] a {
+  border-radius: 999px !important;
+  min-width: 1.85rem !important;
+  width: 1.85rem !important;
+  max-width: 1.85rem !important;
+  min-height: 1.85rem !important;
+  height: 1.85rem !important;
+  max-height: 1.85rem !important;
+  aspect-ratio: 1 / 1;
+  padding: 0 !important;
+}
+
+[class*="st-key-view"] a p,
+[class*="st-key-delete"] button p {
+  display: none;
+}
