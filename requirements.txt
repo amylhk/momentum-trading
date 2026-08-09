@@ -8,4 +8,5 @@ scipy==1.16.3
 scikit-learn==1.7.2
 trendln==0.1.18
 huggingface-hub==1.18.0
+opencv-python==4.13.0.92
 ultralytics==8.4.70
