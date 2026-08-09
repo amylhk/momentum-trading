@@ -2363,7 +2363,23 @@ def load_historical_chart(
         df['color'] = np.where(df['open'] > df['close'], COLOR_BEAR, COLOR_BULL)
         yolo_result = None
         if indicators.get('YOLO_Pattern'):
-            yolo_result = _automatic_yolo_pattern_result(ticker, df)
+            # Analyse the same window that the chart currently shows. Running
+            # YOLO over a much longer history can produce valid rectangles
+            # outside the visible range, making the toggle look ineffective.
+            yolo_frame = df
+            visible_yolo_bars = CHART_VISIBLE_BARS.get(chart_range)
+            if visible_yolo_bars is not None:
+                yolo_frame = df.tail(int(visible_yolo_bars)).reset_index(drop=True)
+            yolo_result = _automatic_yolo_pattern_result(ticker, yolo_frame)
+            if yolo_result and yolo_result.get('status') == 'error':
+                error_text = str(yolo_result.get('error') or '未知錯誤').splitlines()[0]
+                st.warning(f'形態提示暫時無法顯示：{error_text}')
+            elif yolo_result and yolo_result.get('status') == 'ok':
+                detection_count = len(yolo_result.get('detections') or [])
+                if detection_count:
+                    st.caption(f'形態提示：目前圖表範圍偵測到 {detection_count} 個形態框。')
+                else:
+                    st.caption('形態提示：目前圖表範圍未偵測到符合信心度門檻的形態。')
 
         df1 = df[['date', 'open', 'high', 'low', 'close']]
         df1.columns = ['time', 'open', 'high', 'low', 'close']
