@@ -935,7 +935,10 @@ def _render_decision_step(step, index):
                 hide_answer=step.get("hide_answer", False),
             )
         with table_col:
-            st.markdown(f"**{step['table_title']}**")
+            st.markdown(
+                f'<div class="trace-table-title">{html.escape(step["table_title"])}</div>',
+                unsafe_allow_html=True,
+            )
             _render_logic_summary(step.get("logic_summary"))
             _render_structure_levels(step.get("structure_levels"))
             if step.get("rule_sections"):
@@ -1293,11 +1296,18 @@ def _render_decision_flow(row_data, settings, rules):
         .trace-rule-table.compact-gate-table {min-width:560px;}
         .trace-warning-notes {margin:10px 0 24px; color:#d0d6df; font-size:0.9rem; line-height:1.45;}
         .trace-warning-note {margin:3px 0;}
+        .trace-table-title {margin:0.2rem 0 0.8rem; color:#f3f4f6; font-size:1.05rem; font-weight:700; line-height:1.35;}
         @media (max-width: 1180px) {
             .trace-logic-grid.detailed {grid-template-columns:repeat(2, minmax(0, 1fr));}
         }
         @media (max-width: 700px) {
             .trace-logic-grid.detailed {grid-template-columns:1fr;}
+            .decision-step-card {margin:0.25rem 0 1rem;}
+            .trace-table-title {margin:0.15rem 0 0.85rem;}
+            .trace-logic-grid {gap:10px; margin:0.75rem 0 1.1rem;}
+            .trace-level-grid {gap:10px; margin:0.75rem 0 1.15rem;}
+            .trace-rule-table-wrap {margin:0.75rem 0 1.15rem;}
+            .trace-warning-notes {margin:0.75rem 0 1.25rem;}
         }
         </style>
         """,

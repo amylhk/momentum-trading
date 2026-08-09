@@ -578,6 +578,9 @@ st.markdown(
     div.st-key-bookmark_refresh_row {
         margin-top: -1.05rem;
     }
+    div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"] {
+        align-items: center;
+    }
     div.st-key-bookmark_refresh_button button {
         min-width: 8.8rem;
         white-space: nowrap;
@@ -591,6 +594,9 @@ st.markdown(
     }
     div.st-key-bookmark_sort_direction button p {
         line-height: 1;
+    }
+    div.st-key-bookmark_sort_row {
+        margin-top: 0.25rem;
     }
     div.st-key-bookmark_card_grid {
         margin-top: 0.2rem;
@@ -616,6 +622,39 @@ st.markdown(
     }
     div.st-key-bookmark_card_grid [data-testid="stMetric"] {
         margin-top: 0.15rem;
+    }
+    @media (max-width: 640px) {
+        div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"],
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+            gap: 0.55rem !important;
+        }
+        div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"],
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+            min-width: 0 !important;
+            width: auto !important;
+        }
+        div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(1) {
+            flex: 0 0 auto !important;
+        }
+        div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(2) {
+            flex: 1 1 auto !important;
+        }
+        div.st-key-bookmark_refresh_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(3) {
+            display: none !important;
+        }
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(1) {
+            flex: 0 0 2.2rem !important;
+        }
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(2) {
+            flex: 1 1 auto !important;
+        }
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(3) {
+            flex: 0 0 3.15rem !important;
+        }
+        div.st-key-bookmark_sort_row > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-child(4) {
+            display: none !important;
+        }
     }
     </style>
     """,
@@ -904,7 +943,7 @@ def _apply_bookmark_sort():
 
 
 def _set_bookmark_sort_field():
-    selected_label = st.session_state.get("bookmark_sort_field", "Ticker")
+    selected_label = st.session_state.get("bookmark_sort_field", "股票代號")
     field = "sector" if selected_label == "行業" else "ticker"
     current = st.session_state.get("bookmark_sort", {"field": "ticker", "ascending": True})
     st.session_state.bookmark_sort = {
@@ -957,34 +996,35 @@ def render_live_card(row, ticker):
 
 st.session_state.setdefault("bookmark_sort", {"field": "ticker", "ascending": True})
 sort_state = st.session_state.bookmark_sort
-sort_field_label = "行業" if sort_state.get("field") == "sector" else "Ticker"
+sort_field_label = "行業" if sort_state.get("field") == "sector" else "股票代號"
 sort_direction_icon = "↑" if sort_state.get("ascending", True) else "↓"
-if "bookmark_sort_field" not in st.session_state:
+if st.session_state.get("bookmark_sort_field") not in {"股票代號", "行業"}:
     st.session_state.bookmark_sort_field = sort_field_label
-sort_label_col, sort_field_col, sort_direction_col, _ = st.columns(
-    [0.42, 1.15, 0.62, 6.2],
-    vertical_alignment="center",
-)
-with sort_label_col:
-    st.caption("排序")
-with sort_field_col:
-    st.segmented_control(
-        "排序欄位",
-        ["Ticker", "行業"],
-        default=sort_field_label,
-        label_visibility="collapsed",
-        key="bookmark_sort_field",
+with st.container(key="bookmark_sort_row"):
+    sort_label_col, sort_field_col, sort_direction_col, _ = st.columns(
+        [0.42, 1.15, 0.62, 6.2],
+        vertical_alignment="center",
     )
-    selected_sort_label = st.session_state.get("bookmark_sort_field", sort_field_label)
-    if selected_sort_label != sort_field_label:
-        _set_bookmark_sort_field()
-with sort_direction_col:
-    if st.button(
-        sort_direction_icon,
-        help="切換升序／降序",
-        key="bookmark_sort_direction",
-    ):
-        _toggle_bookmark_sort_direction()
+    with sort_label_col:
+        st.caption("排序")
+    with sort_field_col:
+        st.segmented_control(
+            "排序欄位",
+            ["股票代號", "行業"],
+            default=sort_field_label,
+            label_visibility="collapsed",
+            key="bookmark_sort_field",
+        )
+        selected_sort_label = st.session_state.get("bookmark_sort_field", sort_field_label)
+        if selected_sort_label != sort_field_label:
+            _set_bookmark_sort_field()
+    with sort_direction_col:
+        if st.button(
+            sort_direction_icon,
+            help="切換升序／降序",
+            key="bookmark_sort_direction",
+        ):
+            _toggle_bookmark_sort_direction()
 
 # Card View
 
