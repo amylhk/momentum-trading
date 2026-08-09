@@ -557,7 +557,8 @@ def render_stock_detail(row, ticker):
     # Non-actionable classifications do not have a usable entry/stop plan.
     # Showing fallback prices beside the current price made observation stocks
     # look tradable and also left a missing confirmation column in the middle.
-    entry_cols = st.columns(4 if breakout_phase or not actionable_plan else 5)
+    entry_metrics = st.container(key=f"stock_primary_metrics_{ticker}")
+    entry_cols = entry_metrics.columns(4 if breakout_phase or not actionable_plan else 5)
     if current_price is not None and not pd.isna(current_price):
         entry_cols[0].metric('現價', f"${current_price:,.2f}", help=metric_help.get('目前位置'))
     if actionable_plan and not breakout_phase and entry_zone_low is not None and entry_zone_high is not None:
@@ -596,7 +597,8 @@ def render_stock_detail(row, ticker):
         risk_col = entry_cols[3] if breakout_phase else entry_cols[4]
         risk_col.metric('風險', f"{risk_pct:.1%}", help=metric_help.get('風險距離'))
 
-    vs_market_cols = st.columns(4)
+    vs_market_metrics = st.container(key=f"stock_vs_market_metrics_{ticker}")
+    vs_market_cols = vs_market_metrics.columns(4)
     for col, period, label in zip(vs_market_cols[:3], ['1m', '3m', '6m'], ['相對大市 1 個月', '相對大市 3 個月', '相對大市 6 個月']):
         value = get_vs_market_value(row, period)
         if value is not None and not pd.isna(value):

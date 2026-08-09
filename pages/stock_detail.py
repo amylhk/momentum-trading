@@ -1262,8 +1262,8 @@ def _render_decision_flow(row_data, settings, rules):
         .trace-level-card span {font-size:0.82rem; color:#aeb8c7;}
         .trace-level-card strong {font-size:1rem; color:#f9fafb;}
         .trace-level-card small {font-size:0.76rem; color:#b8c1ce; line-height:1.4;}
-        .trace-rule-table-wrap {width:100%; overflow-x:auto;}
-        .trace-rule-table {width:100%; border-collapse:separate; border-spacing:0; table-layout:fixed; border:1px solid #2f3641; border-radius:8px; overflow:hidden;}
+        .trace-rule-table-wrap {display:block; width:100%; max-width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;}
+        .trace-rule-table {width:100%; min-width:760px; border-collapse:separate; border-spacing:0; table-layout:fixed; border:1px solid #2f3641; border-radius:8px; overflow:hidden;}
         .trace-rule-table th, .trace-rule-table td {padding:9px 10px; border-right:1px solid #2f3641; border-bottom:1px solid #2f3641; vertical-align:top; white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word; line-height:1.45;}
         .trace-rule-table th {background:#1d2129; color:#aeb4bf; font-weight:700; text-align:left;}
         .trace-rule-table td {background:#0f1218; color:#f3f4f6;}
@@ -1289,6 +1289,8 @@ def _render_decision_flow(row_data, settings, rules):
         .trace-rule-table.compact-gate-table.narrow-status .trace-rule-col-rule {width:46%;}
         .trace-rule-table.compact-gate-table.narrow-status .trace-rule-col-actual {width:46%;}
         .trace-rule-table.compact-gate-table.narrow-status .trace-rule-col-status {width:8%; text-align:center; white-space:nowrap;}
+        .trace-rule-table:has(.trace-rule-col-score) {min-width:860px;}
+        .trace-rule-table.compact-gate-table {min-width:560px;}
         .trace-warning-notes {margin:10px 0 24px; color:#d0d6df; font-size:0.9rem; line-height:1.45;}
         .trace-warning-note {margin:3px 0;}
         @media (max-width: 1180px) {

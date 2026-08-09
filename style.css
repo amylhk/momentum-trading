@@ -55,3 +55,36 @@
     width: 1.85rem !important;
   }
 }
+
+/* Let detail-page metric groups use two columns on phones instead of
+   Streamlit's default one-column stacking. */
+@media (max-width: 700px) {
+  div[data-testid="stLayoutWrapper"]:has([data-testid="stMetric"]) {
+    min-width: 0 !important;
+  }
+
+  div[data-testid="stLayoutWrapper"]:has([data-testid="stMetric"]) > div[data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap !important;
+    gap: 0.85rem 0.75rem !important;
+  }
+
+  div[data-testid="stLayoutWrapper"]:has([data-testid="stMetric"]) > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+    flex: 1 1 calc(50% - 0.4rem) !important;
+    min-width: calc(50% - 0.4rem) !important;
+    width: calc(50% - 0.4rem) !important;
+  }
+
+  div[data-testid="stLayoutWrapper"]:has([data-testid="stMetric"]) [data-testid="stMetric"] {
+    min-height: 0 !important;
+    padding-bottom: 0.15rem !important;
+  }
+
+  /* The table has an intentional minimum width; this wrapper exposes the
+     horizontal scroll area on touch devices instead of clipping the columns. */
+  .trace-rule-table-wrap {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
