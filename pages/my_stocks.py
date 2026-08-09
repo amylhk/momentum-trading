@@ -1006,15 +1006,16 @@ with st.container(key="bookmark_card_grid"):
         target_col = cols[index % num_cols]
 
         with target_col.container(border=True):
-            header_col, view_col, delete_col = st.columns([1, 0.14, 0.14], vertical_alignment="top")
-            with header_col:
-                render_stock_card_heading(row, ticker)
-            with view_col:
-                st.link_button('', f'http://{st.context.headers.get("host")}/view_stock?symbol={ticker}', key=f"view_{ticker}", icon=':material/document_search:', help='查看詳情')
-            with delete_col:
-                if st.button('', key=f"delete_{ticker}", icon=':material/delete:', help='刪除'):
-                    with st.spinner("正在更新清單..."):
-                        delete_stock(ticker)
+            with st.container(key=f"stock_card_header_{ticker}"):
+                header_col, view_col, delete_col = st.columns([1, 0.14, 0.14], vertical_alignment="top")
+                with header_col:
+                    render_stock_card_heading(row, ticker)
+                with view_col:
+                    st.link_button('', f'http://{st.context.headers.get("host")}/view_stock?symbol={ticker}', key=f"view_{ticker}", icon=':material/document_search:', help='查看詳情')
+                with delete_col:
+                    if st.button('', key=f"delete_{ticker}", icon=':material/delete:', help='刪除'):
+                        with st.spinner("正在更新清單..."):
+                            delete_stock(ticker)
 
             render_live_card(row, ticker)
 
